@@ -255,4 +255,20 @@ int main(int argc, char *argv[]) {
     printf("\n");
     printf("\tSpeedUp IKJ: %f\n", nMidIKJ/nMidIKJThread);
     printf("\tSpeedUp Bloco: %f\n", nMidBloco/nMidBlocoThread);
+
+    // LIBERAR MEMÓRIA
+	Vsubmat_a = liberar_submatriz (Vsubmat_a, nBlocos);
+	Vsubmat_b = liberar_submatriz (Vsubmat_b, nBlocos);
+	Vsubmat_c= liberar_submatriz (Vsubmat_c, nBlocos);
+
+	liberar_matriz(mat_a,N,La);
+	liberar_matriz(mat_b,Lb,M);
+	liberar_matriz(mat_c,N,M);
+    liberar_matriz(mat_c_thread,N,M);
+	liberar_matriz(mat_c_bloco,N,M);
+    liberar_matriz(mat_c_bloco_thread,N,M);
+
+	fclose(fmat_a);
+	fclose(fmat_b);
+	fclose(fmat_c);
 }
