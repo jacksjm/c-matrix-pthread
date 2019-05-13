@@ -30,8 +30,8 @@ help:
 	@echo
 	@echo
 	@echo "####### Exemplo de Execução #######"
-	@echo "./gera_matriz2 10 10"
-	@echo "./main_matriz_thread 10x10-mat-1.map 10x10-mat-2.map"
+	@echo "./gera_matriz2 100 100"
+	@echo "./main_matriz_thread 100x100-mat.map 100x100-mat.map 2"
 
 clean:
 	rm -f *.o *~ $(TARGET) *.map *.map-result
