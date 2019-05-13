@@ -4,6 +4,8 @@
 *.bin
 *.map-result
 main_matriz
+main_matriz_thread
 gera_matriz2
 simple_matriz
 *.json
+.vscode

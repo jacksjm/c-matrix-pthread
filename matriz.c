@@ -189,7 +189,7 @@ Realiza a alocação dos espaços de Memória
 @param nColuna, int, Numero de Colunas da Matriz
 */
 int **alocar_matriz (int nLinha, int nColuna) {
-    int **aNovaMatriz = NULL;
+  int **aNovaMatriz = NULL;
 
 	aNovaMatriz = (int **) malloc(nLinha * sizeof(int *));
 	if (!aNovaMatriz) {
@@ -260,12 +260,8 @@ matriz_bloco_t **particionar_matriz (int **matriz, int mat_lin, int mat_col, int
 	// Enquanto o tamanho de cada carga multiplicado pela
 	// quantidade de processamentos for menor que o limite
 	// alimenta a carga
-	while ((nTamCar * nro_submatrizes) <= nTamLim) {
-		nTamCar += 1;
-	}
+	nTamCar = nTamLim/nro_submatrizes;
 
-	// Retorna ao estado anterior a superação do limite
-	nTamCar -= 1;
 
 	// Verifica se há "resto" de alocação
 	if ( nTamCar * nro_submatrizes < nTamLim){
