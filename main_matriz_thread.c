@@ -99,7 +99,13 @@ int main(int argc, char *argv[]) {
 
     mat_c_thread = alocar_matriz(N, M);
 	zerar_matriz(mat_c_thread, N, M);
-	if ((mat_b == NULL) || (mat_a == NULL) || (mat_c == NULL)) {
+
+    mat_c_bloco = alocar_matriz(N, M);
+    zerar_matriz(mat_c_bloco, N, M);
+
+    mat_c_bloco_thread = alocar_matriz(N, M);
+    zerar_matriz(mat_c_bloco_thread, N, M);
+	if ((mat_b == NULL) || (mat_a == NULL) || (mat_c == NULL) || (mat_c_thread == NULL) || (mat_c_bloco == NULL) || (mat_c_bloco_thread == NULL)) {
 		printf("ERROR: Out of memory\n");
         exit(1);
 	}
@@ -137,7 +143,6 @@ int main(int argc, char *argv[]) {
         Vsubmat_b = particionar_matriz (mat_b, Lb, M, 0, nBlocos);
         Vsubmat_c = constroi_submatrizv2 (N, M, nBlocos);
 
-        mat_c_bloco = alocar_matriz(N, M);
 	    zerar_matriz(mat_c_bloco, N, M);
         for( nMulti = 0; nMulti < nBlocos; nMulti ++)
             multiplicar_submatriz (Vsubmat_a[nMulti], Vsubmat_b[nMulti], Vsubmat_c[nMulti]);
@@ -145,6 +150,11 @@ int main(int argc, char *argv[]) {
         for( nMulti = 0; nMulti < nBlocos; nMulti ++)
             somarIJ(mat_c_bloco,Vsubmat_c[nMulti]->matriz,mat_c_bloco, N, N, N, N);
 
+        // LIBERAR MEMÓRIA
+        Vsubmat_a = liberar_submatriz (Vsubmat_a, nBlocos);
+        Vsubmat_b = liberar_submatriz (Vsubmat_b, nBlocos);
+        Vsubmat_c= liberar_submatriz (Vsubmat_c, nBlocos);
+        
         nEndTime = wtime();
 
         nTimeBloco += ( nEndTime - nStartTime );
@@ -195,7 +205,6 @@ int main(int argc, char *argv[]) {
         Vsubmat_b = particionar_matriz (mat_b, Lb, M, 0, nBlocos);
         Vsubmat_c = constroi_submatrizv2 (N, M, nBlocos);
 
-        mat_c_bloco_thread = alocar_matriz(N, M);
 	    zerar_matriz(mat_c_bloco_thread, N, M);
         nMulti = 0;
         while (nMulti < nBlocos){
@@ -214,10 +223,15 @@ int main(int argc, char *argv[]) {
             }
             nJoin=0;
         }
- 
+
         for( nMulti = 0; nMulti < nBlocos; nMulti ++)
             somarIJ(mat_c_bloco_thread,Vsubmat_c[nMulti]->matriz,mat_c_bloco_thread, N, N, N, N);
 
+        // LIBERAR MEMÓRIA
+        Vsubmat_a = liberar_submatriz (Vsubmat_a, nBlocos);
+        Vsubmat_b = liberar_submatriz (Vsubmat_b, nBlocos);
+        Vsubmat_c= liberar_submatriz (Vsubmat_c, nBlocos);
+        
         nEndTime = wtime();
 
         nTimeBlocoThread += ( nEndTime - nStartTime );
@@ -255,11 +269,6 @@ int main(int argc, char *argv[]) {
     printf("\n");
     printf("\tSpeedUp IKJ: %f\n", nMidIKJ/nMidIKJThread);
     printf("\tSpeedUp Bloco: %f\n", nMidBloco/nMidBlocoThread);
-
-    // LIBERAR MEMÓRIA
-	Vsubmat_a = liberar_submatriz (Vsubmat_a, nBlocos);
-	Vsubmat_b = liberar_submatriz (Vsubmat_b, nBlocos);
-	Vsubmat_c= liberar_submatriz (Vsubmat_c, nBlocos);
 
 	liberar_matriz(mat_a,N,La);
 	liberar_matriz(mat_b,Lb,M);
